@@ -6,8 +6,9 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,12 +17,13 @@ import java.util.concurrent.Callable;
 
 import static io.opentelemetry.examples.utils.Misc.fetchAnimal;
 
-@ApplicationScoped
+@Path("/battle")
+@Produces("text/plain")
 public class AnimalController {
     private static final Map<String, String> SERVICES =
             Map.of(
-                    "mammals", "http://mammal-service:8081/getAnimal",
-                    "fish", "http://fish-service:8083/getAnimal");
+                    "mammals", "http://mammal-service:8081/mammal/getAnimal",
+                    "fish", "http://fish-service:8083/fish/getAnimal");
 
     private final Counter battlesTotal;
 
@@ -40,7 +42,7 @@ public class AnimalController {
         new JvmMemoryMetrics().bindTo(this.registry);
     }
 
-    @Path("/battle")
+    @GET
     public String makeBattle() throws Exception {
         Callable<String> callable =
                 () -> {

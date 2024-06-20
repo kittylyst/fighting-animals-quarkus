@@ -5,9 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.opentelemetry.examples</groupId>
-    <artifactId>animals-demo-quarkus-parent</artifactId>
+    <artifactId>animals-demo-quarkus</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
     <description>Fighting animals demo :: Quarkus version</description>
 
     <properties>
@@ -16,14 +15,12 @@
         <quarkus.platform.version>3.11.2</quarkus.platform.version>
         <quarkus-micrometer-registry-otlp.version>3.2.4</quarkus-micrometer-registry-otlp.version>
 
-        <surefire-plugin.version>3.1.2</surefire-plugin.version>
+        <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
+        <spotless-maven-plugin.version>2.29.0</spotless-maven-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <skip.spotless>true</skip.spotless>
     </properties>
-
-    <modules>
-        <module>animal</module>
-    </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -60,13 +57,12 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${surefire-plugin.version}</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <systemPropertyVariables>
-                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                        <maven.home>${maven.home}</maven.home>
-                    </systemPropertyVariables>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
